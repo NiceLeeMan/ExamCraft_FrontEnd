@@ -26,12 +26,9 @@ const SendButton = styled.div`
 
 `
 
-
-
-
 const SignUpPage : React.FC = () =>{
 
-    const [registrationData, setRegistrationData] = useState<RegistrationFormData >({
+    const [registrationData, setRegistrationData] = useState<RegistrationFormData>({
             username : "",
             password : "",
             email : "",
