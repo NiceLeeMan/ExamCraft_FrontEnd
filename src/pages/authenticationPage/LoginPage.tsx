@@ -29,27 +29,21 @@ const Separator = styled.span`
 
 const LoginPage : React.FC = () =>{
 
-  const [LoginFormData , setLoginFormData] = useState<LoginFormData>({
+  const [loginData , setloginData] = useState<LoginFormData>({
     username : "",
     password : ""
 
   })
 
-  const apiUrl = 'http://localhost:8080/api/login'
-
-
-  const handleLoginInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(e, LoginFormData, setLoginFormData);
-    console.log(LoginFormData)
-  };
-
+ 
 
   const hanldeLoginSubmit = () =>{
-    sendDataToServer(LoginFormData , apiUrl)
+
+    const apiUrl = 'http://localhost:8080/api/login'
+    sendDataToServer(loginData , apiUrl)
 
   }
   
-
   const navigate = useNavigate();
 
   const goToRecoverUsername = () =>{
@@ -67,8 +61,8 @@ const LoginPage : React.FC = () =>{
               label="아이디"
               type=""
               name="username"
-              value={LoginFormData.username}
-              onChange={handleLoginInputChange}
+              value={loginData.username}
+              onChange={handleInputChange(setloginData)}
               placeholder="아이디를 입력하세요."
               margin="0px 0px 0px 0px"
            />
@@ -76,8 +70,8 @@ const LoginPage : React.FC = () =>{
               label="비밀번호"
               type="password"
               name="password"
-              value={LoginFormData.password}
-              onChange={handleLoginInputChange}
+              value={loginData.password}
+              onChange={handleInputChange(setloginData)}
               margin="50px 0px 0px 0px"
               placeholder="비밀번호를 입력하세요."
             />

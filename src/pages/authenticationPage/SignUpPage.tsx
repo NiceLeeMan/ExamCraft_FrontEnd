@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from "react";
 import ButtonComponent from "../../component/ButtonComponent";
 import InputComponent from "../../component/InputCompponent";
 import BackgroundComponent from "../../component/BackgroundComponent";
-import {RegistrationFormData} from "../../types/User";
+import {signUpFormData} from "../../types/User";
 import { validateEmail,validatePassword, validateUsername } from "../../utils/validation";
 import { handleInputChange } from "../../utils/state/useInputChange";
 import styled from "styled-components";
@@ -10,7 +10,6 @@ import { sendDataToServer } from "../../utils/api/authApi";
 
 
 const SendButton = styled.div`
-
     width: 40px;
     height: 20px;
     color: white;
@@ -21,35 +20,28 @@ const SendButton = styled.div`
         background-color: #9a85e0; /* 마우스 오버 시 색상 */
     }
 
-
-
-
 `
 
 const SignUpPage : React.FC = () =>{
 
-    const [registrationData, setRegistrationData] = useState<RegistrationFormData>({
+    const [signUpData, setsignUpData] = useState<signUpFormData>({
             username : "",
             password : "",
             email : "",
     })
 
-    const [code , setCode] = useState<string>("");
+    const [authCode , setAuthCode] = useState<string>("");
 
-    
-    const handleRegistrationInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        handleInputChange(e, registrationData, setRegistrationData);
-    };
-    
+
 
     const handleCodeChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setCode(e.target.value);
+        setAuthCode(e.target.value);
     };
    
     
     const handleErrorMessage = () : string =>{
 
-        const {username, password , email} = registrationData
+        const {username, password , email} = signUpData
 
         const usernameError = validateUsername(username);
         const isPasswordValid = validatePassword(password);
@@ -66,7 +58,7 @@ const SignUpPage : React.FC = () =>{
         } else if (!isEmailValid) {
             errorMessage = "유효한 이메일 주소를 입력해 주세요.";
         }
-        console.log(registrationData)
+        console.log(signUpData)
 
         return errorMessage
         
@@ -79,13 +71,14 @@ const SignUpPage : React.FC = () =>{
 
         if(errorMessage === ""){
             
-          if(code){
+          if(authCode){
 
-            const endPoint = `http://localhost:8080/api/signup/complete?code=${encodeURIComponent(code)}`
+            const endPoint = `http://localhost:8080/api/signup/complete?code=${encodeURIComponent(authCode)}`
 
             try{
-                await sendDataToServer(registrationData, endPoint)
+                await sendDataToServer(signUpData, endPoint)
                 alert("회원가입이 완료되었습니다.")
+                
             }
             catch(error){
                 console.error("회원가입 과정에서 오류 발생:", error);
@@ -105,7 +98,7 @@ const SignUpPage : React.FC = () =>{
    
     const sendAuthCodeToEmail = async () =>{
         const apiUrl = "http://localhost:8080/api/signup/send"
-        sendDataToServer(registrationData, apiUrl)
+        sendDataToServer(signUpData, apiUrl)
     }
         
 
@@ -116,16 +109,16 @@ const SignUpPage : React.FC = () =>{
                 label="아이디"
                 type=""
                 name="username"
-                value={registrationData.username}
-                onChange={handleRegistrationInputChange}
+                value={signUpData.username}
+                onChange={handleInputChange(setsignUpData)}
                 placeholder="아이디를 입력하세요."
                 />
             <InputComponent
                  label="비밀번호" 
                  type="password"
                  name="password"
-                 value={registrationData.password}
-                 onChange={handleRegistrationInputChange}
+                 value={signUpData.password}
+                 onChange={handleInputChange(setsignUpData)}
                  placeholder="비밀번호를 입력하세요."
                  />
 
@@ -133,14 +126,14 @@ const SignUpPage : React.FC = () =>{
                 label="이메일" 
                 type="email"
                 name="email"
-                value={registrationData.email}
-                onChange={handleRegistrationInputChange}
+                value={signUpData.email}
+                onChange={handleInputChange(setsignUpData)}
                 placeholder="이메일을 입력하세요."
              />
             <InputComponent 
                 label="인증번호"
                 type="text"
-                value={code}
+                value={authCode}
                 onChange={handleCodeChange}/>
 
             <ButtonComponent 

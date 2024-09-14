@@ -1,22 +1,23 @@
 import { Dispatch, SetStateAction, ChangeEvent } from "react";
-import { updateUserState } from "./useUpdateState";
 
 
 
 
-
-
-export const handleInputChange = <T extends Record<string , any>>(
-    e: ChangeEvent<HTMLInputElement>,
-    state : T,
-    setState : Dispatch<SetStateAction<T>>
-    ) => {
-    console.log(e.target)
+export const handleInputChange = <T extends Record<string, any>>(
+    setState: Dispatch<SetStateAction<T>>
+  ) => (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(e.target)
+    // 상태 업데이트 로직
 
-    // name을 keyof User로 타입 캐스팅하여 안전하게 처리
-    if (name in state) {
-        updateUserState(name as keyof T , value, setState);
-    }
-};
+    setState((prevState) => {
+      console.log("prevState : "+prevState);
+      if (name in prevState) {
+        return { ...prevState, [name]: value };
+      }
+      return prevState;
+    });
+
+  };
+  
+
+
