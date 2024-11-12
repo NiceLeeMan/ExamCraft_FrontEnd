@@ -4,7 +4,7 @@ import { sendDataToServer } from "./authApi";
 
 
 
-const handleRequestAuthCode = async<T> (
+export const handleRequestAuthCodeE = async<T> (
     data : T,
     endPoint :string
 ) => {

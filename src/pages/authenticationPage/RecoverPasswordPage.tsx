@@ -6,6 +6,7 @@ import BackgroundComponent from "../../component/BackgroundComponent";
 import { ResetPasswordFormData } from "../../types/User";
 import { handleInputChange } from "../../utils/state/useInputChange";
 import { sendDataToServer } from "../../utils/api/authApi";
+import { handleRequestAuthCodeE } from "../../utils/api/emailService";
 
 
 const SendButton = styled.button`
@@ -51,14 +52,10 @@ const RecoverPasswordPage : React.FC = () =>{
   
   const handleRequestAuthCode = async () => {
     const endPoint = `http://localhost:8080/api/auth/request-auth-code`;
-    try {
-      await sendDataToServer(resetPasswordData, endPoint);
-      alert("인증번호가 이메일로 전송되었습니다.");
-    } catch (error) {
-      console.error("Error requesting auth code:", error);
-      alert("인증번호 요청 중 오류가 발생했습니다.");
-    }
+    handleRequestAuthCodeE(resetPasswordData,endPoint)
   };
+
+
 
   const handleResetPassword = async () => {
     const endPoint = `http://localhost:8080/api/auth/reset-password`;
@@ -76,6 +73,7 @@ const RecoverPasswordPage : React.FC = () =>{
       alert("비밀번호 재설정 중 오류가 발생했습니다.");
     }
   };
+
 
     return(
         <BackgroundComponent>

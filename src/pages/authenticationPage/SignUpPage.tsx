@@ -7,6 +7,7 @@ import { validateEmail,validatePassword, validateUsername } from "../../utils/va
 import { handleInputChange } from "../../utils/state/useInputChange";
 import styled from "styled-components";
 import { sendDataToServer } from "../../utils/api/authApi";
+import { handleRequestAuthCodeE } from "../../utils/api/emailService";
 
 
 const SendButton = styled.div`
@@ -96,11 +97,10 @@ const SignUpPage : React.FC = () =>{
     }
     //인증번호 올바르게 입력하면 -> 회원가입 성공시키는 로직 진행 ㄱ
    
-    const sendAuthCodeToEmail = async () =>{
+    const handleRequestAuthCode = async () => {
         const apiUrl = "http://localhost:8080/api/signup/send"
-        sendDataToServer(signUpData, apiUrl)
-    }
-        
+       handleRequestAuthCodeE(signUpData,apiUrl)
+    };
 
     return(
         <BackgroundComponent>
@@ -141,7 +141,7 @@ const SignUpPage : React.FC = () =>{
                 margin="50px 0 0 0"
                 onClick={handleSignUpSubmit}/>
 
-                <SendButton onClick={sendAuthCodeToEmail}>전송</SendButton>
+                <SendButton onClick={handleRequestAuthCode}>전송</SendButton>
         </BackgroundComponent>
         
        
